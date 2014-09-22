@@ -131,7 +131,7 @@ echo "###"
 echo "### Checking gnutls"
 echo "###"
 
-if ${PKG_CONFIG} --exact-version=${GNUTLS_VERSION} gnutls
+if ${PKG_CONFIG} --atleast-version=${GNUTLS_VERSION} gnutls
 then
     echo "GNUTLS already installed in $GNUTLS_DIR. skipping."
 else
