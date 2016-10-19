@@ -6,16 +6,15 @@ function on_error() {
 }
 trap on_error ERR
 
-# Required by gwenhywfar: Some recent gnutls
+## online banking: gwenhywfar+aqbanking
+GWENHYWFAR_VERSION="4.16.0beta"
+GWENHYWFAR_URL="http://www2.aquamaniac.de/sites/download/download.php?package=01&release=204&file=01&dummy=gwenhywfar-4.16.0beta.tar.gz"
+
+AQBANKING_VERSION="5.6.10"
+AQBANKING_URL="http://www2.aquamaniac.de/sites/download/download.php?package=03&release=206&file=01&dummy=aqbanking-5.6.10.tar.gz"
+
 GNUTLS_VERSION="2.12.22" #"3.1.26"
 GNUTLS_URL="ftp://ftp.gnutls.org/gcrypt/gnutls/v2.12/gnutls-${GNUTLS_VERSION}.tar.bz2"
-
-## online banking: gwenhywfar+aqbanking
-GWENHYWFAR_VERSION="4.12.0beta"
-GWENHYWFAR_URL="http://www2.aquamaniac.de/sites/download/download.php?package=01&release=76&file=01&dummy=gwenhywfar-${GWENHYWFAR_VERSION}.tar.gz"
-
-AQBANKING_VERSION="5.5.0.2git"
-AQBANKING_URL="http://www2.aquamaniac.de/sites/download/download.php?package=03&release=117&file=01&dummy=aqbanking-${AQBANKING_VERSION}.tar.gz"
 
 EXTRA_MAKE_ARGS="-j2"
 
@@ -26,17 +25,17 @@ else
     echo "You must call:"
     echo "yum install libgcrypt-devel p11-kit-devel gcc-g++ gmp-devel"
 fi
-GNUTLS_DIR=$GLOBAL_DIR/gnutls-${GNUTLS_VERSION}
-GWENHYWFAR_DIR=$GLOBAL_DIR/gwenhywfar-${GWENHYWFAR_VERSION}
 AQBANKING_DIR=$GLOBAL_DIR/aqbanking-${AQBANKING_VERSION}
-
+GWENHYWFAR_DIR=$AQBANKING_DIR
+GNUTLS_DIR=$AQBANKING_DIR
+#GWENHYWFAR_DIR=$GLOBAL_DIR/gwenhywfar-${GWENHYWFAR_VERSION}
 DOWNLOAD_DIR=downloads
 TMP_DIR=tmp
 mkdir -p $TMP_DIR
 
 
 PKG_CONFIG=pkg-config
-export PKG_CONFIG_PATH="$GNUTLS_DIR/lib/pkgconfig:$GWENHYWFAR_DIR/lib/pkgconfig:$AQBANKING_DIR/lib/pkgconfig:$PKG_CONFIG_PATH"
+export PKG_CONFIG_PATH="$AQBANKING_DIR/lib/pkgconfig:$GWENHYWFAR_DIR/lib/pkgconfig:$PKG_CONFIG_PATH"
 
 function die() { echo "$@"; exit 1; }
 function qpushd() { pushd "$@" >/dev/null; }
